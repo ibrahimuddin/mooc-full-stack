@@ -1,6 +1,11 @@
 import Course from './components/Course'
+import {useState} from 'react'
 
 const App = () => {
+  const [notes,setNotes] = useState([])
+  const [newNote, setNewNote] = useState(
+    'enter a text'
+  )
     const course = {
       id: 1,
       name: 'Half Stack application development',
@@ -59,6 +64,22 @@ const App = () => {
         return total + part.exercises;
       }, 0);
     }
+
+    const addNote = (event) => {
+      event.preventDefault()
+      const noteObject = {
+        content: newNote,
+        important: Math.random() < 0.5,
+        id: notes.length + 1,
+      }
+      setNotes(notes.concat(noteObject))
+      setNewNote('')
+    }
+
+    const handleNoteChange = (event) => {
+      console.log(event.target.value)
+      setNewNote(event.target.value)
+    }
       
     
     // const totalExercises = course.parts.reduce((total,part)=> {
@@ -68,6 +89,10 @@ const App = () => {
     return <div>
         <Course course={course} total={getTotalExercises(course.parts)}/>
         <Course course={course2} total={getTotalExercises(course2.parts)}/>
+        <form onSubmit={addNote}>
+          <input value={newNote} onChange={handleNoteChange}/>
+          <button type="submit">save</button>
+        </form>
       </div>
   }
   
